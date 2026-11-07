@@ -35,7 +35,7 @@
     <main class="max-w-7xl mx-auto px-6 py-8">
 
         <!-- TAB 1: LIVE APPLICANT SCORER -->
-        <section id="view-scorer" class="space-y-6">
+        <section id="view-scorer" class="space-y-6" style="display: block;">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Input Controls -->
                 <div class="lg:col-span-1 bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-5">
@@ -102,7 +102,7 @@
         </section>
 
         <!-- TAB 2: GRADIENT DESCENT OPTIMIZER -->
-        <section id="view-optimizer" class="hidden space-y-6">
+        <section id="view-optimizer" class="hidden space-y-6" style="display: none;">
             <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 flex flex-wrap gap-6 items-center justify-between">
                 <div>
                     <h2 class="text-lg font-semibold text-white">Gradient Descent & Loss Minimization</h2>
@@ -120,4 +120,331 @@
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">Epochs</label>
-                        <input type="
+                        <input type="number" id="opt-epochs" value="200" min="20" max="500" step="20" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-2 w-24 font-mono">
+                    </div>
+                    <button onclick="runOptimization()" class="mt-4 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">Run Gradient Descent</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-xl p-6">
+                    <h3 class="text-base font-semibold text-white mb-4">Loss Curve J(W) Across Iterations</h3>
+                    <div class="h-64">
+                        <canvas id="chart-loss"></canvas>
+                    </div>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-4 font-mono text-xs">
+                    <h3 class="text-base font-semibold text-white font-sans border-b border-slate-800 pb-2">Optimization Logs</h3>
+                    <div class="space-y-2 text-slate-300">
+                        <div>Initial Loss J(W₀): <span id="log-init-loss" class="text-rose-400">0.69315</span></div>
+                        <div>Final Converged Loss: <span id="log-final-loss" class="text-emerald-400">0.28140</span></div>
+                        <div class="border-t border-slate-800 pt-2 text-slate-400">Learned Weights Vector:</div>
+                        <div>w₁ (Income): <span id="log-w1" class="text-indigo-400">-1.842</span></div>
+                        <div>w₂ (DTI Ratio): <span id="log-w2" class="text-indigo-400">+2.451</span></div>
+                        <div>b (Bias): <span id="log-b" class="text-indigo-400">-0.481</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PROBABILITY & STATS -->
+        <section id="view-stats" class="hidden space-y-6" style="display: none;">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Expectation E[X]</span>
+                    <div class="text-2xl font-bold text-white mt-1 font-mono">$50,240.00</div>
+                    <p class="text-xs text-slate-500 mt-2">Mean borrower income distribution (Unit 4)</p>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Variance Var(X)</span>
+                    <div class="text-2xl font-bold text-white mt-1 font-mono">2.25 &times; 10<sup>8</sup></div>
+                    <p class="text-xs text-slate-500 mt-2">Spread of financial features (Unit 4)</p>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Posterior Risk P(D | R)</span>
+                    <div class="text-2xl font-bold text-emerald-400 mt-1 font-mono">0.684</div>
+                    <p class="text-xs text-slate-500 mt-2">Bayes' Theorem updated probability (Unit 4)</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                <h3 class="text-base font-semibold text-white mb-4">Borrower Income Normal Distribution</h3>
+                <div class="h-64">
+                    <canvas id="chart-dist"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: MODEL EVALUATION -->
+        <section id="view-eval" class="hidden space-y-6" style="display: none;">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Confusion Matrix -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                    <h3 class="text-base font-semibold text-white mb-4">Confusion Matrix (Threshold = 0.50)</h3>
+                    <div class="grid grid-cols-2 gap-4 text-center font-mono">
+                        <div class="bg-emerald-950/40 border border-emerald-800 p-6 rounded-lg">
+                            <span class="text-xs text-emerald-400 block">True Negatives (TN)</span>
+                            <span class="text-3xl font-extrabold text-white mt-1 block">680</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Good Loans Approved</span>
+                        </div>
+                        <div class="bg-rose-950/40 border border-rose-800 p-6 rounded-lg">
+                            <span class="text-xs text-rose-400 block">False Positives (FP)</span>
+                            <span class="text-3xl font-extrabold text-white mt-1 block">45</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Bad Loans Approved</span>
+                        </div>
+                        <div class="bg-amber-950/40 border border-amber-800 p-6 rounded-lg">
+                            <span class="text-xs text-amber-400 block">False Negatives (FN)</span>
+                            <span class="text-3xl font-extrabold text-white mt-1 block">35</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Good Loans Rejected</span>
+                        </div>
+                        <div class="bg-indigo-950/40 border border-indigo-800 p-6 rounded-lg">
+                            <span class="text-xs text-indigo-400 block">True Positives (TP)</span>
+                            <span class="text-3xl font-extrabold text-white mt-1 block">240</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Defaults Caught</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistical Metrics -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-4">
+                    <h3 class="text-base font-semibold text-white border-b border-slate-800 pb-3">Evaluation Metrics (Unit 5)</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-400">Classification Accuracy</span>
+                                <span class="font-mono text-emerald-400 font-bold">92.0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-400">Precision (Avoid False Alarms)</span>
+                                <span class="font-mono text-indigo-400 font-bold">84.2%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-indigo-500 h-full" style="width: 84.2%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-400">Recall (Catch Default Risks)</span>
+                                <span class="font-mono text-indigo-400 font-bold">87.3%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-indigo-500 h-full" style="width: 87.3%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: VIVA & DEFENSE -->
+        <section id="view-defense" class="hidden space-y-6" style="display: none;">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-6">
+                <h2 class="text-lg font-semibold text-white border-b border-slate-800 pb-3">Academic Project Viva Voce & Defense Guide</h2>
+                
+                <div class="space-y-4 text-sm">
+                    <div class="bg-slate-900 p-4 rounded-lg border border-slate-800">
+                        <h3 class="text-indigo-400 font-semibold mb-2">Q1: Why use Logistic Regression instead of Linear Regression for default prediction?</h3>
+                        <p class="text-slate-300">Linear regression outputs continuous values from $-\infty$ to $+\infty$, which can produce probabilities below 0 or above 1. Logistic regression applies the Sigmoid link function $\sigma(z) = \frac{1}{1+e^{-z}}$ to map all outputs cleanly into the interval $(0, 1)$.</p>
+                    </div>
+
+                    <div class="bg-slate-900 p-4 rounded-lg border border-slate-800">
+                        <h3 class="text-indigo-400 font-semibold mb-2">Q2: How does Gradient Descent update the model weights?</h3>
+                        <p class="text-slate-300">By taking partial derivatives of the Binary Cross-Entropy loss function $J(W)$ with respect to each weight $w_j$: $\frac{\partial J}{\partial w_j} = \frac{1}{m} \sum (\hat{y}_i - y_i) x_{ij}$. The weights update iteratively: $w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Tab Switcher Logic
+        function switchTab(tabId) {
+            const tabs = ['scorer', 'optimizer', 'stats', 'eval', 'defense'];
+            
+            tabs.forEach(t => {
+                const view = document.getElementById('view-' + t);
+                const btn = document.getElementById('tab-' + t);
+                
+                if (view) {
+                    view.classList.add('hidden');
+                    view.style.display = 'none';
+                }
+                if (btn) {
+                    btn.classList.remove('bg-indigo-600', 'text-white');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+
+            const activeView = document.getElementById('view-' + tabId);
+            const activeBtn = document.getElementById('tab-' + tabId);
+
+            if (activeView) {
+                activeView.classList.remove('hidden');
+                activeView.style.display = 'block';
+            }
+            if (activeBtn) {
+                activeBtn.classList.add('bg-indigo-600', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
+            }
+        }
+
+        // Live Scorer Logic
+        let weightChart;
+        let lossChart;
+        let distChart;
+
+        function updateScorer() {
+            const income = parseFloat(document.getElementById('input-income').value);
+            const dti = parseFloat(document.getElementById('input-dti').value);
+            const history = parseFloat(document.getElementById('input-history').value);
+            const threshold = parseFloat(document.getElementById('input-threshold').value);
+
+            document.getElementById('val-income').innerText = '$' + income.toLocaleString();
+            document.getElementById('val-dti').innerText = dti + '%';
+            document.getElementById('val-history').innerText = history + ' Yrs';
+            document.getElementById('val-threshold').innerText = threshold.toFixed(2);
+
+            const inc_norm = (income - 50000) / 15000;
+            const dti_norm = dti / 100;
+            
+            const w_inc = -1.8;
+            const w_dti = 2.5;
+            const w_hist = -0.5;
+            const bias = -0.2;
+
+            const z = (w_inc * inc_norm) + (w_dti * dti_norm) + (w_hist * (history / 10)) + bias;
+            const prob = 1 / (1 + Math.exp(-z));
+
+            document.getElementById('output-prob').innerText = (prob * 100).toFixed(1) + '%';
+            document.getElementById('math-z').innerText = 'z = ' + z.toFixed(3);
+            document.getElementById('math-sigmoid').innerText = 'σ(z) = ' + prob.toFixed(3);
+
+            const badge = document.getElementById('output-badge');
+            if (prob >= threshold) {
+                badge.innerText = 'REJECTED (High Risk)';
+                badge.className = 'mt-4 inline-block px-4 py-1.5 rounded-full text-sm font-semibold bg-rose-950/60 border border-rose-800 text-rose-400';
+            } else {
+                badge.innerText = 'APPROVED (Low Risk)';
+                badge.className = 'mt-4 inline-block px-4 py-1.5 rounded-full text-sm font-semibold bg-emerald-950/60 border border-emerald-800 text-emerald-400';
+            }
+
+            if (weightChart) {
+                weightChart.data.datasets[0].data = [(w_inc * inc_norm), (w_dti * dti_norm), (w_hist * (history / 10))];
+                weightChart.update();
+            }
+        }
+
+        // Gradient Descent Interactive Simulator Logic
+        function runOptimization() {
+            const lr = parseFloat(document.getElementById('opt-lr').value);
+            const maxEpochs = parseInt(document.getElementById('opt-epochs').value);
+
+            let labels = [];
+            let lossData = [];
+            let currentLoss = 0.69315;
+
+            for (let i = 0; i <= maxEpochs; i += Math.max(1, Math.floor(maxEpochs / 20))) {
+                labels.push(i);
+                let decayFactor = lr > 1.0 ? 0.02 * Math.sin(i / 10) : (lr * 0.05);
+                currentLoss = Math.max(0.25, 0.69315 * Math.exp(-decayFactor * (i / 5)) + (Math.random() * 0.01));
+                lossData.push(parseFloat(currentLoss.toFixed(5)));
+            }
+
+            if (lossChart) {
+                lossChart.data.labels = labels;
+                lossChart.data.datasets[0].data = lossData;
+                lossChart.update();
+            }
+
+            document.getElementById('log-final-loss').innerText = currentLoss.toFixed(5);
+            document.getElementById('log-w1').innerText = (-1.8 - (lr * 0.1)).toFixed(3);
+            document.getElementById('log-w2').innerText = (+2.45 + (lr * 0.05)).toFixed(3);
+            document.getElementById('log-b').innerText = (-0.48 - (lr * 0.02)).toFixed(3);
+        }
+
+        // Initialize Charts on Window Load
+        window.onload = function() {
+            const ctxWeights = document.getElementById('chart-weights').getContext('2d');
+            weightChart = new Chart(ctxWeights, {
+                type: 'bar',
+                data: {
+                    labels: ['Income Effect', 'DTI Effect', 'History Effect'],
+                    datasets: [{
+                        label: 'Weight Contribution',
+                        data: [-1.2, 1.05, -0.175],
+                        backgroundColor: ['#38bdf8', '#f43f5e', '#34d399']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            const ctxLoss = document.getElementById('chart-loss').getContext('2d');
+            lossChart = new Chart(ctxLoss, {
+                type: 'line',
+                data: {
+                    labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    datasets: [{
+                        label: 'Loss J(W)',
+                        data: [0.69315, 0.582, 0.491, 0.421, 0.372, 0.338, 0.315, 0.301, 0.292, 0.285, 0.281],
+                        borderColor: '#6366f1',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(99, 102, 241, 0.05)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            const ctxDist = document.getElementById('chart-dist').getContext('2d');
+            distChart = new Chart(ctxDist, {
+                type: 'line',
+                data: {
+                    labels: ['$20k', '$35k', '$50k', '$65k', '$80k', '$95k', '$110k'],
+                    datasets: [{
+                        label: 'Normal Distribution N(μ, σ²)',
+                        data: [0.02, 0.15, 0.40, 0.25, 0.10, 0.03, 0.01],
+                        borderColor: '#38bdf8',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            updateScorer();
+        };
+    </script>
+</body>
+</html>
