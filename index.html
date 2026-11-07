@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Risk & Default Prediction Workbench | M.Sc. AI & Data Science</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-950/60 border border-indigo-800 px-2.5 py-1 rounded-full">M.Sc. AI & Data Science Microproject</span>
+                <h1 class="text-xl font-bold text-white mt-1">Intelligent Credit Risk & Default Prediction System</h1>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
+                <button onclick="switchTab('scorer')" id="tab-scorer" class="px-4 py-2 text-sm font-medium rounded-md bg-indigo-600 text-white transition">Live Scorer</button>
+                <button onclick="switchTab('optimizer')" id="tab-optimizer" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Gradient Descent</button>
+                <button onclick="switchTab('stats')" id="tab-stats" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Probability & Stats</button>
+                <button onclick="switchTab('eval')" id="tab-eval" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Model Evaluation</button>
+                <button onclick="switchTab('defense')" id="tab-defense" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Viva & Defense</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+
+        <!-- TAB 1: LIVE APPLICANT SCORER -->
+        <section id="view-scorer" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Input Controls -->
+                <div class="lg:col-span-1 bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-5">
+                    <h2 class="text-lg font-semibold text-white border-b border-slate-800 pb-3">Applicant Profile Parameters</h2>
+                    
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-400">Annual Income ($)</span>
+                            <span id="val-income" class="font-mono text-indigo-400 font-bold">$45,000</span>
+                        </div>
+                        <input type="range" id="input-income" min="15000" max="120000" step="1000" value="45000" oninput="updateScorer()" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-400">Debt-to-Income (DTI) Ratio</span>
+                            <span id="val-dti" class="font-mono text-indigo-400 font-bold">42%</span>
+                        </div>
+                        <input type="range" id="input-dti" min="10" max="80" step="1" value="42" oninput="updateScorer()" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-400">Credit History Length (Years)</span>
+                            <span id="val-history" class="font-mono text-indigo-400 font-bold">3.5 Yrs</span>
+                        </div>
+                        <input type="range" id="input-history" min="0.5" max="15" step="0.5" value="3.5" oninput="updateScorer()" class="w-full accent-indigo-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-400">Decision Risk Threshold</span>
+                            <span id="val-threshold" class="font-mono text-indigo-400 font-bold">0.50</span>
+                        </div>
+                        <input type="range" id="input-threshold" min="0.1" max="0.9" step="0.05" value="0.50" oninput="updateScorer()" class="w-full accent-indigo-500">
+                    </div>
+                </div>
+
+                <!-- Output Display & Mathematical Breakdown -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div>
+                            <span class="text-sm text-slate-400">Calculated Default Probability</span>
+                            <div class="text-5xl font-extrabold text-white mt-2 font-mono" id="output-prob">34.2%</div>
+                            <div class="mt-4 inline-block px-4 py-1.5 rounded-full text-sm font-semibold" id="output-badge">APPROVED (Low Risk)</div>
+                        </div>
+                        <div class="space-y-3 bg-slate-900/60 p-4 rounded-lg border border-slate-800 font-mono text-xs">
+                            <div class="text-slate-400 border-b border-slate-800 pb-2">Mathematical Pipeline (Unit 5)</div>
+                            <div>Raw Linear Combination: <span id="math-z" class="text-emerald-400 font-bold">z = -0.654</span></div>
+                            <div>Sigmoid Transformation: <span id="math-sigmoid" class="text-indigo-400 font-bold">σ(z) = 0.342</span></div>
+                            <div>Decision Rule: <span id="math-rule" class="text-slate-300">p &lt; 0.50 → Class 0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Linear Combination -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-6">
+                        <h3 class="text-base font-semibold text-white mb-4">Feature Weight Contributions</h3>
+                        <div class="h-56">
+                            <canvas id="chart-weights"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: GRADIENT DESCENT OPTIMIZER -->
+        <section id="view-optimizer" class="hidden space-y-6">
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 flex flex-wrap gap-6 items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-white">Gradient Descent & Loss Minimization</h2>
+                    <p class="text-sm text-slate-400">Syllabus Unit 3 (Optimization) & Unit 5 (Binary Cross-Entropy Loss)</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Learning Rate (&alpha;)</label>
+                        <select id="opt-lr" class="bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-2 font-mono">
+                            <option value="0.01">0.01 (Slow)</option>
+                            <option value="0.1" selected>0.10 (Optimal)</option>
+                            <option value="0.5">0.50 (Aggressive)</option>
+                            <option value="1.2">1.20 (Overshoot)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Epochs</label>
+                        <input type="
