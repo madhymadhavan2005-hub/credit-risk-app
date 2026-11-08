@@ -12,22 +12,29 @@
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen">
+<body class="bg-slate-950 text-slate-100 min-h-screen">
 
     <!-- Header Navigation -->
-    <header class="border-b border-zinc-800 bg-zinc-900/90 backdrop-blur sticky top-0 z-50">
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-violet-400 bg-violet-950/60 border border-violet-800 px-2.5 py-1 rounded-full">M.Sc. AI & Data Science Microproject</span>
-                <h1 class="text-xl font-bold text-white mt-1">Intelligent Credit Risk & Default Prediction System</h1>
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-emerald-950/80 border border-emerald-800 rounded-lg text-emerald-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2.5 py-0.5 rounded-full">M.Sc. AI & Data Science Microproject</span>
+                    <h1 class="text-xl font-bold text-white mt-0.5">Intelligent Credit Risk Workbench</h1>
+                </div>
             </div>
             <!-- Navigation Tabs -->
-            <nav class="flex space-x-1 bg-zinc-950 p-1 rounded-lg border border-zinc-800">
-                <button onclick="switchTab('scorer')" id="tab-scorer" class="px-4 py-2 text-sm font-medium rounded-md bg-violet-600 text-white transition">Live Scorer</button>
-                <button onclick="switchTab('optimizer')" id="tab-optimizer" class="px-4 py-2 text-sm font-medium rounded-md text-zinc-400 hover:text-white transition">Gradient Descent</button>
-                <button onclick="switchTab('stats')" id="tab-stats" class="px-4 py-2 text-sm font-medium rounded-md text-zinc-400 hover:text-white transition">Probability & Stats</button>
-                <button onclick="switchTab('eval')" id="tab-eval" class="px-4 py-2 text-sm font-medium rounded-md text-zinc-400 hover:text-white transition">Model Evaluation</button>
-                <button onclick="switchTab('defense')" id="tab-defense" class="px-4 py-2 text-sm font-medium rounded-md text-zinc-400 hover:text-white transition">Viva & Defense</button>
+            <nav class="flex space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                <button onclick="switchTab('scorer')" id="tab-scorer" class="px-4 py-2 text-sm font-medium rounded-md bg-emerald-600 text-white transition">Live Scorer</button>
+                <button onclick="switchTab('optimizer')" id="tab-optimizer" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Gradient Descent</button>
+                <button onclick="switchTab('stats')" id="tab-stats" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Probability & Stats</button>
+                <button onclick="switchTab('eval')" id="tab-eval" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Model Evaluation</button>
+                <button onclick="switchTab('defense')" id="tab-defense" class="px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-white transition">Viva & Defense</button>
             </nav>
         </div>
     </header>
@@ -38,60 +45,60 @@
         <section id="view-scorer" class="space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Input Controls -->
-                <div class="lg:col-span-1 bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-5">
-                    <h2 class="text-lg font-semibold text-white border-b border-zinc-800 pb-3">Applicant Profile Parameters</h2>
+                <div class="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-5">
+                    <h2 class="text-lg font-semibold text-white border-b border-slate-800 pb-3">Applicant Profile Parameters</h2>
                     
                     <div>
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="text-zinc-400">Annual Income ($)</span>
-                            <span id="val-income" class="font-mono text-violet-400 font-bold">$45,000</span>
+                            <span class="text-slate-400">Annual Income ($)</span>
+                            <span id="val-income" class="font-mono text-emerald-400 font-bold">$45,000</span>
                         </div>
-                        <input type="range" id="input-income" min="15000" max="120000" step="1000" value="45000" oninput="updateScorer()" class="w-full accent-violet-500">
+                        <input type="range" id="input-income" min="15000" max="120000" step="1000" value="45000" oninput="updateScorer()" class="w-full accent-emerald-500">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="text-zinc-400">Debt-to-Income (DTI) Ratio</span>
-                            <span id="val-dti" class="font-mono text-violet-400 font-bold">42%</span>
+                            <span class="text-slate-400">Debt-to-Income (DTI) Ratio</span>
+                            <span id="val-dti" class="font-mono text-emerald-400 font-bold">42%</span>
                         </div>
-                        <input type="range" id="input-dti" min="10" max="80" step="1" value="42" oninput="updateScorer()" class="w-full accent-violet-500">
+                        <input type="range" id="input-dti" min="10" max="80" step="1" value="42" oninput="updateScorer()" class="w-full accent-emerald-500">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="text-zinc-400">Credit History Length (Years)</span>
-                            <span id="val-history" class="font-mono text-violet-400 font-bold">3.5 Yrs</span>
+                            <span class="text-slate-400">Credit History Length (Years)</span>
+                            <span id="val-history" class="font-mono text-emerald-400 font-bold">3.5 Yrs</span>
                         </div>
-                        <input type="range" id="input-history" min="0.5" max="15" step="0.5" value="3.5" oninput="updateScorer()" class="w-full accent-violet-500">
+                        <input type="range" id="input-history" min="0.5" max="15" step="0.5" value="3.5" oninput="updateScorer()" class="w-full accent-emerald-500">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="text-zinc-400">Decision Risk Threshold</span>
-                            <span id="val-threshold" class="font-mono text-violet-400 font-bold">0.50</span>
+                            <span class="text-slate-400">Decision Risk Threshold</span>
+                            <span id="val-threshold" class="font-mono text-emerald-400 font-bold">0.50</span>
                         </div>
-                        <input type="range" id="input-threshold" min="0.1" max="0.9" step="0.05" value="0.50" oninput="updateScorer()" class="w-full accent-violet-500">
+                        <input type="range" id="input-threshold" min="0.1" max="0.9" step="0.05" value="0.50" oninput="updateScorer()" class="w-full accent-emerald-500">
                     </div>
                 </div>
 
                 <!-- Output Display & Mathematical Breakdown -->
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                         <div>
-                            <span class="text-sm text-zinc-400">Calculated Default Probability</span>
+                            <span class="text-sm text-slate-400">Calculated Default Probability</span>
                             <div class="text-5xl font-extrabold text-white mt-2 font-mono" id="output-prob">34.2%</div>
                             <div class="mt-4 inline-block px-4 py-1.5 rounded-full text-sm font-semibold" id="output-badge">APPROVED (Low Risk)</div>
                         </div>
-                        <div class="space-y-3 bg-zinc-950 p-4 rounded-lg border border-zinc-800 font-mono text-xs">
-                            <div class="text-zinc-400 border-b border-zinc-800 pb-2">Mathematical Pipeline (Unit 5)</div>
+                        <div class="space-y-3 bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono text-xs">
+                            <div class="text-slate-400 border-b border-slate-800 pb-2">Mathematical Pipeline (Unit 5)</div>
                             <div>Raw Linear Combination: <span id="math-z" class="text-emerald-400 font-bold">z = -0.654</span></div>
-                            <div>Sigmoid Transformation: <span id="math-sigmoid" class="text-violet-400 font-bold">σ(z) = 0.342</span></div>
-                            <div>Decision Rule: <span id="math-rule" class="text-zinc-300">p &lt; 0.50 → Class 0</span></div>
+                            <div>Sigmoid Transformation: <span id="math-sigmoid" class="text-emerald-400 font-bold">σ(z) = 0.342</span></div>
+                            <div>Decision Rule: <span id="math-rule" class="text-slate-300">p &lt; 0.50 → Class 0</span></div>
                         </div>
                     </div>
 
                     <!-- Visual Linear Combination -->
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
                         <h3 class="text-base font-semibold text-white mb-4">Feature Weight Contributions</h3>
                         <div class="h-56 relative">
                             <canvas id="chart-weights"></canvas>
@@ -103,15 +110,15 @@
 
         <!-- TAB 2: GRADIENT DESCENT OPTIMIZER -->
         <section id="view-optimizer" class="hidden space-y-6">
-            <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-wrap gap-6 items-center justify-between">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-wrap gap-6 items-center justify-between">
                 <div>
                     <h2 class="text-lg font-semibold text-white">Gradient Descent & Loss Minimization</h2>
-                    <p class="text-sm text-zinc-400">Syllabus Unit 3 (Optimization) & Unit 5 (Binary Cross-Entropy Loss)</p>
+                    <p class="text-sm text-slate-400">Syllabus Unit 3 (Optimization) & Unit 5 (Binary Cross-Entropy Loss)</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div>
-                        <label class="text-xs text-zinc-400 block mb-1">Learning Rate (&alpha;)</label>
-                        <select id="opt-lr" class="bg-zinc-950 border border-zinc-700 text-white text-sm rounded-lg p-2 font-mono">
+                        <label class="text-xs text-slate-400 block mb-1">Learning Rate (&alpha;)</label>
+                        <select id="opt-lr" class="bg-slate-950 border border-slate-700 text-white text-sm rounded-lg p-2 font-mono">
                             <option value="0.01">0.01 (Slow)</option>
                             <option value="0.1" selected>0.10 (Optimal)</option>
                             <option value="0.5">0.50 (Aggressive)</option>
@@ -119,29 +126,29 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-zinc-400 block mb-1">Epochs</label>
-                        <input type="number" id="opt-epochs" value="200" min="20" max="500" step="20" class="bg-zinc-950 border border-zinc-700 text-white text-sm rounded-lg p-2 w-24 font-mono">
+                        <label class="text-xs text-slate-400 block mb-1">Epochs</label>
+                        <input type="number" id="opt-epochs" value="200" min="20" max="500" step="20" class="bg-slate-950 border border-slate-700 text-white text-sm rounded-lg p-2 w-24 font-mono">
                     </div>
-                    <button onclick="runOptimization()" class="mt-4 bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">Run Gradient Descent</button>
+                    <button onclick="runOptimization()" class="mt-4 bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition cursor-pointer">Run Gradient Descent</button>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-6">
                     <h3 class="text-base font-semibold text-white mb-4">Loss Curve J(W) Across Iterations</h3>
                     <div class="h-64 relative">
                         <canvas id="chart-loss"></canvas>
                     </div>
                 </div>
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4 font-mono text-xs">
-                    <h3 class="text-base font-semibold text-white font-sans border-b border-zinc-800 pb-2">Optimization Logs</h3>
-                    <div class="space-y-2 text-zinc-300">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4 font-mono text-xs">
+                    <h3 class="text-base font-semibold text-white font-sans border-b border-slate-800 pb-2">Optimization Logs</h3>
+                    <div class="space-y-2 text-slate-300">
                         <div>Initial Loss J(W₀): <span id="log-init-loss" class="text-rose-400">0.69315</span></div>
                         <div>Final Converged Loss: <span id="log-final-loss" class="text-emerald-400">0.28140</span></div>
-                        <div class="border-t border-zinc-800 pt-2 text-zinc-400">Learned Weights Vector:</div>
-                        <div>w₁ (Income): <span id="log-w1" class="text-violet-400">-1.842</span></div>
-                        <div>w₂ (DTI Ratio): <span id="log-w2" class="text-violet-400">+2.451</span></div>
-                        <div>b (Bias): <span id="log-b" class="text-violet-400">-0.481</span></div>
+                        <div class="border-t border-slate-800 pt-2 text-slate-400">Learned Weights Vector:</div>
+                        <div>w₁ (Income): <span id="log-w1" class="text-emerald-400">-1.842</span></div>
+                        <div>w₂ (DTI Ratio): <span id="log-w2" class="text-emerald-400">+2.451</span></div>
+                        <div>b (Bias): <span id="log-b" class="text-emerald-400">-0.481</span></div>
                     </div>
                 </div>
             </div>
@@ -150,24 +157,24 @@
         <!-- TAB 3: PROBABILITY & STATS -->
         <section id="view-stats" class="hidden space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                    <span class="text-xs text-zinc-400 uppercase">Expectation E[X]</span>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Expectation E[X]</span>
                     <div class="text-2xl font-bold text-white mt-1 font-mono">$50,240.00</div>
-                    <p class="text-xs text-zinc-500 mt-2">Mean borrower income distribution (Unit 4)</p>
+                    <p class="text-xs text-slate-500 mt-2">Mean borrower income distribution (Unit 4)</p>
                 </div>
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                    <span class="text-xs text-zinc-400 uppercase">Variance Var(X)</span>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Variance Var(X)</span>
                     <div class="text-2xl font-bold text-white mt-1 font-mono">2.25 &times; 10<sup>8</sup></div>
-                    <p class="text-xs text-zinc-500 mt-2">Spread of financial features (Unit 4)</p>
+                    <p class="text-xs text-slate-500 mt-2">Spread of financial features (Unit 4)</p>
                 </div>
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                    <span class="text-xs text-zinc-400 uppercase">Posterior Risk P(D | R)</span>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                    <span class="text-xs text-slate-400 uppercase">Posterior Risk P(D | R)</span>
                     <div class="text-2xl font-bold text-emerald-400 mt-1 font-mono">0.684</div>
-                    <p class="text-xs text-zinc-500 mt-2">Bayes' Theorem updated probability (Unit 4)</p>
+                    <p class="text-xs text-slate-500 mt-2">Bayes' Theorem updated probability (Unit 4)</p>
                 </div>
             </div>
 
-            <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
                 <h3 class="text-base font-semibold text-white mb-4">Borrower Income Normal Distribution</h3>
                 <div class="h-64 relative">
                     <canvas id="chart-dist"></canvas>
@@ -179,61 +186,61 @@
         <section id="view-eval" class="hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Confusion Matrix -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
                     <h3 class="text-base font-semibold text-white mb-4">Confusion Matrix (Threshold = 0.50)</h3>
                     <div class="grid grid-cols-2 gap-4 text-center font-mono">
                         <div class="bg-emerald-950/40 border border-emerald-800 p-6 rounded-lg">
                             <span class="text-xs text-emerald-400 block">True Negatives (TN)</span>
                             <span class="text-3xl font-extrabold text-white mt-1 block">680</span>
-                            <span class="text-xs text-zinc-400 mt-1 block">Good Loans Approved</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Good Loans Approved</span>
                         </div>
                         <div class="bg-rose-950/40 border border-rose-800 p-6 rounded-lg">
                             <span class="text-xs text-rose-400 block">False Positives (FP)</span>
                             <span class="text-3xl font-extrabold text-white mt-1 block">45</span>
-                            <span class="text-xs text-zinc-400 mt-1 block">Bad Loans Approved</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Bad Loans Approved</span>
                         </div>
                         <div class="bg-amber-950/40 border border-amber-800 p-6 rounded-lg">
                             <span class="text-xs text-amber-400 block">False Negatives (FN)</span>
                             <span class="text-3xl font-extrabold text-white mt-1 block">35</span>
-                            <span class="text-xs text-zinc-400 mt-1 block">Good Loans Rejected</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Good Loans Rejected</span>
                         </div>
-                        <div class="bg-violet-950/40 border border-violet-800 p-6 rounded-lg">
-                            <span class="text-xs text-violet-400 block">True Positives (TP)</span>
+                        <div class="bg-emerald-950/40 border border-emerald-800 p-6 rounded-lg">
+                            <span class="text-xs text-emerald-400 block">True Positives (TP)</span>
                             <span class="text-3xl font-extrabold text-white mt-1 block">240</span>
-                            <span class="text-xs text-zinc-400 mt-1 block">Defaults Caught</span>
+                            <span class="text-xs text-slate-400 mt-1 block">Defaults Caught</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Statistical Metrics -->
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
-                    <h3 class="text-base font-semibold text-white border-b border-zinc-800 pb-3">Evaluation Metrics (Unit 5)</h3>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
+                    <h3 class="text-base font-semibold text-white border-b border-slate-800 pb-3">Evaluation Metrics (Unit 5)</h3>
                     <div class="space-y-3">
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="text-zinc-400">Classification Accuracy</span>
+                                <span class="text-slate-400">Classification Accuracy</span>
                                 <span class="font-mono text-emerald-400 font-bold">92.0%</span>
                             </div>
-                            <div class="w-full bg-zinc-950 h-2 rounded-full overflow-hidden">
+                            <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
                                 <div class="bg-emerald-500 h-full" style="width: 92%"></div>
                             </div>
                         </div>
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="text-zinc-400">Precision (Avoid False Alarms)</span>
-                                <span class="font-mono text-violet-400 font-bold">84.2%</span>
+                                <span class="text-slate-400">Precision (Avoid False Alarms)</span>
+                                <span class="font-mono text-emerald-400 font-bold">84.2%</span>
                             </div>
-                            <div class="w-full bg-zinc-950 h-2 rounded-full overflow-hidden">
-                                <div class="bg-violet-500 h-full" style="width: 84.2%"></div>
+                            <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full" style="width: 84.2%"></div>
                             </div>
                         </div>
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="text-zinc-400">Recall (Catch Default Risks)</span>
-                                <span class="font-mono text-violet-400 font-bold">87.3%</span>
+                                <span class="text-slate-400">Recall (Catch Default Risks)</span>
+                                <span class="font-mono text-emerald-400 font-bold">87.3%</span>
                             </div>
-                            <div class="w-full bg-zinc-950 h-2 rounded-full overflow-hidden">
-                                <div class="bg-violet-500 h-full" style="width: 87.3%"></div>
+                            <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full" style="width: 87.3%"></div>
                             </div>
                         </div>
                     </div>
@@ -243,18 +250,18 @@
 
         <!-- TAB 5: VIVA & DEFENSE -->
         <section id="view-defense" class="hidden space-y-6">
-            <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
-                <h2 class="text-lg font-semibold text-white border-b border-zinc-800 pb-3">Academic Project Viva Voce & Defense Guide</h2>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
+                <h2 class="text-lg font-semibold text-white border-b border-slate-800 pb-3">Academic Project Viva Voce & Defense Guide</h2>
                 
                 <div class="space-y-4 text-sm">
-                    <div class="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
-                        <h3 class="text-violet-400 font-semibold mb-2">Q1: Why use Logistic Regression instead of Linear Regression for default prediction?</h3>
-                        <p class="text-zinc-300">Linear regression outputs continuous values from $-\infty$ to $+\infty$, which can produce probabilities below 0 or above 1. Logistic regression applies the Sigmoid link function $\sigma(z) = \frac{1}{1+e^{-z}}$ to map all outputs cleanly into the interval $(0, 1)$.</p>
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="text-emerald-400 font-semibold mb-2">Q1: Why use Logistic Regression instead of Linear Regression for default prediction?</h3>
+                        <p class="text-slate-300">Linear regression outputs continuous values from $-\infty$ to $+\infty$, which can produce probabilities below 0 or above 1. Logistic regression applies the Sigmoid link function $\sigma(z) = \frac{1}{1+e^{-z}}$ to map all outputs cleanly into the interval $(0, 1)$.</p>
                     </div>
 
-                    <div class="bg-zinc-950 p-4 rounded-lg border border-zinc-800">
-                        <h3 class="text-violet-400 font-semibold mb-2">Q2: How does Gradient Descent update the model weights?</h3>
-                        <p class="text-zinc-300">By taking partial derivatives of the Binary Cross-Entropy loss function $J(W)$ with respect to each weight $w_j$: $\frac{\partial J}{\partial w_j} = \frac{1}{m} \sum (\hat{y}_i - y_i) x_{ij}$. The weights update iteratively: $w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$.</p>
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="text-emerald-400 font-semibold mb-2">Q2: How does Gradient Descent update the model weights?</h3>
+                        <p class="text-slate-300">By taking partial derivatives of the Binary Cross-Entropy loss function $J(W)$ with respect to each weight $w_j$: $\frac{\partial J}{\partial w_j} = \frac{1}{m} \sum (\hat{y}_i - y_i) x_{ij}$. The weights update iteratively: $w_j := w_j - \alpha \frac{\partial J}{\partial w_j}$.</p>
                     </div>
                 </div>
             </div>
@@ -277,8 +284,8 @@
                     view.classList.add('hidden');
                 }
                 if (btn) {
-                    btn.classList.remove('bg-violet-600', 'text-white');
-                    btn.classList.add('text-zinc-400');
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('text-slate-400');
                 }
             });
 
@@ -289,11 +296,10 @@
                 activeView.classList.remove('hidden');
             }
             if (activeBtn) {
-                activeBtn.classList.add('bg-violet-600', 'text-white');
-                activeBtn.classList.remove('text-zinc-400');
+                activeBtn.classList.add('bg-emerald-600', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
             }
 
-            // Force charts to recalculate sizing when their parent tab becomes visible
             setTimeout(() => {
                 if (tabId === 'scorer' && weightChart) weightChart.resize();
                 if (tabId === 'optimizer' && lossChart) lossChart.resize();
@@ -378,7 +384,7 @@
                     datasets: [{
                         label: 'Weight Contribution',
                         data: [-1.2, 1.05, -0.175],
-                        backgroundColor: ['#a78bfa', '#f43f5e', '#34d399']
+                        backgroundColor: ['#10b981', '#f43f5e', '#34d399']
                     }]
                 },
                 options: {
@@ -386,8 +392,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } },
-                        x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
@@ -400,10 +406,10 @@
                     datasets: [{
                         label: 'Loss J(W)',
                         data: [0.69315, 0.582, 0.491, 0.421, 0.372, 0.338, 0.315, 0.301, 0.292, 0.285, 0.281],
-                        borderColor: '#8b5cf6',
+                        borderColor: '#10b981',
                         tension: 0.3,
                         fill: true,
-                        backgroundColor: 'rgba(139, 92, 246, 0.05)'
+                        backgroundColor: 'rgba(16, 185, 129, 0.08)'
                     }]
                 },
                 options: {
@@ -411,8 +417,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } },
-                        x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
@@ -425,10 +431,10 @@
                     datasets: [{
                         label: 'Normal Distribution N(μ, σ²)',
                         data: [0.02, 0.15, 0.40, 0.25, 0.10, 0.03, 0.01],
-                        borderColor: '#a78bfa',
+                        borderColor: '#34d399',
                         tension: 0.4,
                         fill: true,
-                        backgroundColor: 'rgba(167, 139, 250, 0.1)'
+                        backgroundColor: 'rgba(52, 211, 153, 0.1)'
                     }]
                 },
                 options: {
@@ -436,8 +442,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } },
-                        x: { grid: { color: '#27272a' }, ticks: { color: '#a1a1aa' } }
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
