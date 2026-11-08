@@ -91,10 +91,10 @@
                             <div class="mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold" id="output-badge">APPROVED (Low Risk)</div>
                         </div>
 
-                        <!-- NEW: Visual Risk Meter / Gauge Canvas -->
+                        <!-- Speedometer Gauge Canvas with Needle -->
                         <div class="md:col-span-1 flex flex-col items-center justify-center border-t md:border-t-0 md:border-l md:border-r border-zinc-800 pt-4 md:pt-0 px-2">
-                            <span class="text-xs text-zinc-400 uppercase tracking-wider mb-1">Risk Gauge Meter</span>
-                            <div class="w-36 h-24 relative">
+                            <span class="text-xs text-zinc-400 uppercase tracking-wider mb-1">Risk Gauge Speedometer</span>
+                            <div class="w-44 h-28 relative">
                                 <canvas id="chart-gauge"></canvas>
                             </div>
                         </div>
@@ -283,6 +283,47 @@
     <!-- JavaScript Logic -->
     <script>
         let weightChart, lossChart, distChart, gaugeChart;
+        let currentProbability = 34.2; // Value tracked for gauge needle
+
+        // Custom Needle Plugin for Chart.js Speedometer Gauge
+        const gaugeNeedlePlugin = {
+            id: 'gaugeNeedle',
+            afterDatasetDraw(chart, args, options) {
+                const { ctx, config, chartArea: { top, bottom, left, right, width, height } } = chart;
+                ctx.save();
+
+                const dataValue = currentProbability;
+                const angle = Math.PI + (dataValue / 100) * Math.PI;
+
+                const cx = width / 2 + left;
+                const cy = height + top - 5;
+                const needleRadius = height - 15;
+
+                // Draw Pointer Needle
+                ctx.translate(cx, cy);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, -3);
+                ctx.lineTo(needleRadius, 0);
+                ctx.lineTo(0, 3);
+                ctx.fillStyle = '#f4f4f5';
+                ctx.fill();
+                ctx.rotate(-angle);
+
+                // Draw Center Needle Cap
+                ctx.beginPath();
+                ctx.arc(0, 0, 6, 0, Math.PI * 2);
+                ctx.fillStyle = '#f59e0b';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#18181b';
+                ctx.stroke();
+
+                ctx.restore();
+            }
+        };
+
+        Chart.register(gaugeNeedlePlugin);
 
         function switchTab(tabId) {
             const tabs = ['scorer', 'optimizer', 'stats', 'eval', 'defense'];
@@ -291,9 +332,7 @@
                 const view = document.getElementById('view-' + t);
                 const btn = document.getElementById('tab-' + t);
                 
-                if (view) {
-                    view.classList.add('hidden');
-                }
+                if (view) view.classList.add('hidden');
                 if (btn) {
                     btn.classList.remove('bg-amber-500', 'text-zinc-950', 'font-bold');
                     btn.classList.add('text-zinc-400');
@@ -303,9 +342,7 @@
             const activeView = document.getElementById('view-' + tabId);
             const activeBtn = document.getElementById('tab-' + tabId);
 
-            if (activeView) {
-                activeView.classList.remove('hidden');
-            }
+            if (activeView) activeView.classList.remove('hidden');
             if (activeBtn) {
                 activeBtn.classList.add('bg-amber-500', 'text-zinc-950', 'font-bold');
                 activeBtn.classList.remove('text-zinc-400');
@@ -343,30 +380,32 @@
             const z = (w_inc * inc_norm) + (w_dti * dti_norm) + (w_hist * (history / 10)) + bias;
             const prob = 1 / (1 + Math.exp(-z));
             const probPct = prob * 100;
+            currentProbability = probPct; // Update global value for needle plugin
 
             document.getElementById('output-prob').innerText = probPct.toFixed(1) + '%';
             document.getElementById('math-z').innerText = 'z = ' + z.toFixed(3);
             document.getElementById('math-sigmoid').innerText = 'σ(z) = ' + prob.toFixed(3);
 
             const badge = document.getElementById('output-badge');
+            
+            // 3-Tier Risk Classification Logic (Low Risk, Medium Risk, High Risk)
             if (prob >= threshold) {
                 badge.innerText = 'REJECTED (High Risk)';
-                badge.className = 'mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-rose-950/60 border border-rose-800 text-rose-400';
+                badge.className = 'mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-rose-950/80 border border-rose-800 text-rose-400';
+            } else if (prob >= (threshold * 0.65)) {
+                badge.innerText = 'REVIEW (Medium Risk)';
+                badge.className = 'mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-orange-950/80 border border-orange-800 text-orange-400';
             } else {
                 badge.innerText = 'APPROVED (Low Risk)';
-                badge.className = 'mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-amber-950/60 border border-amber-800 text-amber-400';
+                badge.className = 'mt-4 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-amber-950/80 border border-amber-800 text-amber-400';
             }
 
-            // Update Feature Weights Bar Chart
             if (weightChart) {
                 weightChart.data.datasets[0].data = [(w_inc * inc_norm), (w_dti * dti_norm), (w_hist * (history / 10))];
                 weightChart.update();
             }
 
-            // Update Risk Gauge Chart dynamically
             if (gaugeChart) {
-                gaugeChart.data.datasets[0].data = [probPct, 100 - probPct];
-                gaugeChart.data.datasets[0].backgroundColor = prob >= threshold ? ['#f43f5e', '#27272a'] : ['#f59e0b', '#27272a'];
                 gaugeChart.update();
             }
         }
@@ -399,22 +438,22 @@
         }
 
         window.onload = function() {
-            // Gauge Meter Initialization (Half-Doughnut)
+            // Initialization for Speedometer Gauge (3-Color Spectrum: Low, Medium, High Risk)
             const ctxGauge = document.getElementById('chart-gauge').getContext('2d');
             gaugeChart = new Chart(ctxGauge, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Risk Level', 'Remaining'],
+                    labels: ['Low Risk', 'Medium Risk', 'High Risk'],
                     datasets: [{
-                        data: [34.2, 65.8],
-                        backgroundColor: ['#f59e0b', '#27272a'],
+                        data: [35, 30, 35],
+                        backgroundColor: ['#f59e0b', '#f97316', '#f43f5e'],
                         borderWidth: 0
                     }]
                 },
                 options: {
                     rotation: -90,
                     circumference: 180,
-                    cutout: '75%',
+                    cutout: '72%',
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
